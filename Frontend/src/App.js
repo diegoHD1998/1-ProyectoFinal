@@ -323,6 +323,7 @@ const App = () => {
             </div>
 
             <AppFooter />
+            <div class="layout-mask"></div>
 
         </div>
     );
