@@ -36,13 +36,6 @@ namespace SistemaRestobarSayka.Data
         public virtual DbSet<Ventum> Venta { get; set; }
         public virtual DbSet<Zona> Zonas { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:ConexionDB");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
