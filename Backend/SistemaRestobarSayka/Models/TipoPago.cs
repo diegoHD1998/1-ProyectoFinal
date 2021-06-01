@@ -9,12 +9,12 @@ namespace SistemaRestobarSayka.Models
     {
         public TipoPago()
         {
-            Venta = new HashSet<Ventum>();
+            Venta = new HashSet<Venta>();
         }
 
         public int IdTipoPago { get; set; }
         public string Nombre { get; set; }
 
-        public virtual ICollection<Ventum> Venta { get; set; }
+        public virtual ICollection<Venta> Venta { get; set; }
     }
 }

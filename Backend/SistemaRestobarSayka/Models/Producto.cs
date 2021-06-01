@@ -22,7 +22,7 @@ namespace SistemaRestobarSayka.Models
         public string Estado { get; set; }
         public int CategoriaIdCategoria { get; set; }
 
-        public virtual Categorium CategoriaIdCategoriaNavigation { get; set; }
+        public virtual Categoria CategoriaIdCategoriaNavigation { get; set; }
         public virtual ICollection<ProductoModificador> ProductoModificadors { get; set; }
         public virtual ICollection<ProductoPedido> ProductoPedidos { get; set; }
         public virtual ICollection<Variante> Variantes { get; set; }

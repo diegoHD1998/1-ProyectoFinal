@@ -18,8 +18,8 @@ namespace SistemaRestobarSayka.Data
         {
         }
 
-        public virtual DbSet<Boletum> Boleta { get; set; }
-        public virtual DbSet<Categorium> Categoria { get; set; }
+        public virtual DbSet<Boleta> Boleta { get; set; }
+        public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Impresora> Impresoras { get; set; }
         public virtual DbSet<Mesa> Mesas { get; set; }
         public virtual DbSet<Modificador> Modificadors { get; set; }
@@ -33,7 +33,7 @@ namespace SistemaRestobarSayka.Data
         public virtual DbSet<TipoPago> TipoPagos { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Variante> Variantes { get; set; }
-        public virtual DbSet<Ventum> Venta { get; set; }
+        public virtual DbSet<Venta> Venta { get; set; }
         public virtual DbSet<Zona> Zonas { get; set; }
 
 
@@ -41,7 +41,7 @@ namespace SistemaRestobarSayka.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
-            modelBuilder.Entity<Boletum>(entity =>
+            modelBuilder.Entity<Boleta>(entity =>
             {
                 entity.HasKey(e => e.IdBoleta);
 
@@ -52,7 +52,7 @@ namespace SistemaRestobarSayka.Data
                 entity.Property(e => e.FormaDePago).IsRequired();
             });
 
-            modelBuilder.Entity<Categorium>(entity =>
+            modelBuilder.Entity<Categoria>(entity =>
             {
                 entity.HasKey(e => e.IdCategoria);
 
@@ -360,7 +360,7 @@ namespace SistemaRestobarSayka.Data
                     .HasConstraintName("FK_VarianteProducto");
             });
 
-            modelBuilder.Entity<Ventum>(entity =>
+            modelBuilder.Entity<Venta>(entity =>
             {
                 entity.HasKey(e => e.IdVenta);
 

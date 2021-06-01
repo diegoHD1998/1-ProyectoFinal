@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SistemaRestobarSayka.Models
 {
-    public partial class Boletum
+    public partial class Boleta
     {
         public int IdBoleta { get; set; }
         public string Folio { get; set; }

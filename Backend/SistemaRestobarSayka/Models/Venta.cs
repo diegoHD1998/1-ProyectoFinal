@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace SistemaRestobarSayka.Models
 {
-    public partial class Ventum
+    public partial class Venta
     {
-        public Ventum()
+        public Venta()
         {
             Pedidos = new HashSet<Pedido>();
         }

@@ -21,7 +21,7 @@ namespace SistemaRestobarSayka.Models
 
         public virtual Mesa MesaIdMesaNavigation { get; set; }
         public virtual Usuario UsuarioIdUsuarioNavigation { get; set; }
-        public virtual Ventum VentaIdVentaNavigation { get; set; }
+        public virtual Venta VentaIdVentaNavigation { get; set; }
         public virtual ICollection<ProductoPedido> ProductoPedidos { get; set; }
     }
 }
