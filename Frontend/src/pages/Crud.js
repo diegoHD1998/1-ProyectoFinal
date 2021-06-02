@@ -209,7 +209,7 @@ export const Crud = () => {
         return (
             <>
                 <span className="p-column-title">Image</span>
-                <img src={`assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="product-image" />
+                <img src={`/assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="product-image" />
             </>
         )
     }
