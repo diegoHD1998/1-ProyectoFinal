@@ -57,6 +57,7 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -97,7 +98,7 @@ namespace SistemaRestobarSayka.Controllers
             _context.Rols.Remove(rol);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(id);
         }
 
         private bool RolExists(int id)

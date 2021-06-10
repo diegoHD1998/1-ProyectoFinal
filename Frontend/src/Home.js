@@ -9,38 +9,6 @@ import { AppMenu } from './AppMenu';
 import { AppProfile } from './AppProfile';
 import { AppConfig } from './AppConfig';
 
-import { Dashboard } from './components/Dashboard';
-import { ButtonDemo } from './components/ButtonDemo';
-import { ChartDemo } from './components/ChartDemo';
-import { Documentation } from './components/Documentation';
-import { FileDemo } from './components/FileDemo';
-import { FloatLabelDemo } from './components/FloatLabelDemo';
-import { FormLayoutDemo } from './components/FormLayoutDemo';
-import { InputDemo } from './components/InputDemo';
-import { ListDemo } from './components/ListDemo';
-import { MenuDemo } from './components/MenuDemo';
-import { MessagesDemo } from './components/MessagesDemo';
-import { MiscDemo } from './components/MiscDemo';
-import { OverlayDemo } from './components/OverlayDemo';
-import { PanelDemo } from './components/PanelDemo';
-import { TableDemo } from './components/TableDemo';
-import { TreeDemo } from './components/TreeDemo';
-import { InvalidStateDemo } from './components/InvalidStateDemo';
-
-import { Calendar } from './pages/Calendar';
-import { Crud } from './pages/Crud';
-import { EmptyPage } from './pages/EmptyPage';
-
-import { DisplayDemo } from './utilities/DisplayDemo';
-import { ElevationDemo } from './utilities/ElevationDemo';
-import { FlexBoxDemo } from './utilities/FlexBoxDemo';
-import { GridDemo } from './utilities/GridDemo';
-import { IconsDemo } from './utilities/IconsDemo';
-import { SpacingDemo } from './utilities/SpacingDemo';
-import { TextDemo } from './utilities/TextDemo';
-import { TypographyDemo } from './utilities/TypographyDemo';
-import { TimelineDemo } from './utilities/TimelineDemo';
-
 import PrimeReact from 'primereact/api';
 
 import 'primereact/resources/themes/saga-blue/theme.css';
@@ -54,6 +22,21 @@ import '@fullcalendar/timegrid/main.css';
 import './layout/flags/flags.css';
 import './layout/layout.scss';
 import './App.scss';
+
+import { Dashboard } from './components/Dashboard';
+import ResumenVentas from './pages/Informes/ResumenVentas';
+import VentasEmpleados from './pages/Informes/VentasEmpleados';
+import VentasProductos from './pages/Informes/VentasProductos';
+import Productos from './pages/Productos/Productos';
+import Categorias from './pages/Productos/Categorias';
+import Variantes from './pages/Productos/Variantes';
+import Modificadores from './pages/Productos/Modificadores';
+import Usuarios from './pages/Usuarios/Usuarios';
+import Roles from './pages/Usuarios/Roles';
+import Mesas from './pages/Mesas/Mesas';
+import Zonas from './pages/Mesas/Zonas';
+
+
 
 const Home = () => {
 
@@ -133,96 +116,46 @@ const Home = () => {
     }
 
     const menu = [
-        { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/home' },
+        { label: "Home", icon: "pi pi-fw pi-home", to: "/home" },
         {
-            label: 'UI Kit', icon: 'pi pi-fw pi-sitemap',
+            label: "Informes",
+            icon: "pi pi-fw pi-chart-bar",
             items: [
-                { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/home/formlayout' },
-                { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/home/input' },
-                { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/home/floatlabel' },
-                { label: "Invalid State", icon: "pi pi-fw pi-exclamation-circle", to: "/home/invalidstate" },
-                { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/home/button' },
-                { label: 'Table', icon: 'pi pi-fw pi-table', to: '/home/table' },
-                { label: 'List', icon: 'pi pi-fw pi-list', to: '/home/list' },
-                { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/home/tree' },
-                { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/home/panel' },
-                { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/home/overlay' },
-                { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/home/menu' },
-                { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/home/messages' },
-                { label: 'File', icon: 'pi pi-fw pi-file', to: '/home/file' },
-                { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/home/chart' },
-                { label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/home/misc' },
+                { label: "Resumen de Ventas", icon: "pi pi-fw pi-bookmark", to: "/home/resumen-ventas" },
+                { label: "Ventas por Empleado", icon: "pi pi-fw pi-bookmark", to: "/home/ventas-empleados" },
+                { label: "Ventas por Producto", icon: "pi pi-fw pi-bookmark", to: "/home/ventas-producto" },
+            ],
+        },
+        {
+            label: "Productos",
+            icon: "pi pi-fw pi-book",
+            items: [
+                { label: "Lista de Productos", to: "/home/lista-productos" },
+                { label: "Categorias", to: "/home/categoria" },
+                { label: "Variantes", to: "/home/variantes" },
+                { label: "Modificadores", to: "/home/modificadores" },
             ]
         },
         {
-            label: 'Utilities', icon: 'pi pi-fw pi-globe',
+            label: "Usuarios",
+            icon: "pi pi-fw pi-users",
             items: [
-                { label: 'Display', icon: 'pi pi-fw pi-desktop', to: '/home/display' },
-                { label: 'Elevation', icon: 'pi pi-fw pi-external-link', to: '/home/elevation' },
-                { label: 'Flexbox', icon: 'pi pi-fw pi-directions', to: '/home/flexbox' },
-                { label: 'Icons', icon: 'pi pi-fw pi-search', to: '/home/icons' },
-                { label: 'Grid System', icon: 'pi pi-fw pi-th-large', to: '/home/grid' },
-                { label: 'Spacing', icon: 'pi pi-fw pi-arrow-right', to: '/home/spacing' },
-                { label: 'Typography', icon: 'pi pi-fw pi-align-center', to: '/home/typography' },
-                { label: 'Text', icon: 'pi pi-fw pi-pencil', to: '/home/text' },
+                { label: "Lista de Usuarios",icon:'pi pi-fw pi-user' ,to: "/home/lista-usuarios" },
+                { label: "Roles", icon:'pi pi-fw pi-user-minus', to: "/home/roles" },
+                
             ]
         },
         {
-            label: 'Pages', icon: 'pi pi-fw pi-clone',
+            label: "Mesas",
+            icon: "pi pi-fw pi-table",
             items: [
-                { label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/home/crud' },
-                { label: 'Calendar', icon: 'pi pi-fw pi-calendar-plus', to: '/home/calendar' },
-                { label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/home/timeline' },
-                { label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/home/empty' }
+                { label: "Lista de Mesas" ,to: "/home/lista-mesas" },
+                { label: "Zonas", to: "/home/zonas" },
+                
             ]
         },
-        {
-            label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search',
-            items: [
-                {
-                    label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                    items: [
-                        {
-                            label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                            ]
-                        },
-                        {
-                            label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 1.2.2', icon: 'pi pi-fw pi-bookmark' }
-                            ]
-                        },
-                    ]
-                },
-                {
-                    label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                    items: [
-                        {
-                            label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-bookmark' },
-                            ]
-                        },
-                        {
-                            label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-bookmark' }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
-        { label: 'View Source', icon: 'pi pi-fw pi-search', command: () => { window.location = "https://github.com/primefaces/sigma-react" } }
+        { label: "Ejemplo", icon: "pi pi-fw pi-home", to: "/home/1234" },
+        { label: "Ejemplo2", icon: "pi pi-fw pi-home", to: "/home/123" },
     ];
 
     const addClass = (element, className) => {
@@ -292,34 +225,25 @@ const Home = () => {
 
             <div className="layout-main">
                 <Route path="/home" exact component={Dashboard} />
-                <Route path="/home/formlayout" component={FormLayoutDemo} />
-                <Route path="/home/input" component={InputDemo} />
-                <Route path="/home/floatlabel" component={FloatLabelDemo} />
-                <Route path="/home/invalidstate" component={InvalidStateDemo} />
-                <Route path="/home/button" component={ButtonDemo} />
-                <Route path="/home/table" component={TableDemo} />
-                <Route path="/home/list" component={ListDemo} />
-                <Route path="/home/tree" component={TreeDemo} />
-                <Route path="/home/panel" component={PanelDemo} />
-                <Route path="/home/overlay" component={OverlayDemo} />
-                <Route path="/home/menu" component={MenuDemo} />
-                <Route path="/home/messages" component={MessagesDemo} />
-                <Route path="/home/file" component={FileDemo} />
-                <Route path="/home/chart" component={ChartDemo} />
-                <Route path="/home/misc" component={MiscDemo} />
-                <Route path="/home/display" component={DisplayDemo} />
-                <Route path="/home/elevation" component={ElevationDemo} />
-                <Route path="/home/flexbox" component={FlexBoxDemo} />
-                <Route path="/home/icons" component={IconsDemo} />
-                <Route path="/home/grid" component={GridDemo} />
-                <Route path="/home/spacing" component={SpacingDemo} />
-                <Route path="/home/typography" component={TypographyDemo} />
-                <Route path="/home/text" component={TextDemo} />
-                <Route path="/home/calendar" component={Calendar} />
-                <Route path="/home/timeline" component={TimelineDemo} />
-                <Route path="/home/crud" component={Crud} />
-                <Route path="/home/empty" component={EmptyPage} />
-                <Route path="/home/documentation" component={Documentation} />
+                {/* Informes */}
+                <Route path="/home/resumen-ventas" component={ResumenVentas} />
+                <Route path="/home/ventas-empleados" component={VentasEmpleados} />
+                <Route path="/home/ventas-producto" component={VentasProductos} />
+
+                {/* Productos */}
+                <Route path="/home/lista-productos" component={Productos} />
+                <Route path="/home/categoria" component={Categorias} />
+                <Route path="/home/variantes" component={Variantes} />
+                <Route path="/home/modificadores" component={Modificadores} />
+
+                {/* Usuarios */}
+                <Route path="/home/lista-usuarios" component={Usuarios} />
+                <Route path="/home/roles" component={Roles} />
+
+                {/* Mesas */}
+                <Route path="/home/lista-mesas" component={Mesas} />
+                <Route path="/home/zonas" component={Zonas} />
+                
             </div>
 
             <AppFooter />

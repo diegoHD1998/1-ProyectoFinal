@@ -319,6 +319,7 @@ namespace SistemaRestobarSayka.Data
                 entity.Property(e => e.Direccion).IsRequired();
 
                 entity.Property(e => e.Email).IsRequired();
+                entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.Property(e => e.Estado).IsRequired();
 
