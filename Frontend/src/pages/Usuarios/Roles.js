@@ -21,7 +21,6 @@ export default function Roles ()  {
     const [rol, setRol] = useState(emptyProduct);/* <----------------- */
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [selectedRoles, setSelectedRoles] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
@@ -192,7 +191,7 @@ export default function Roles ()  {
 
                     </DataTable>
 
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Detalle Rol" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         
                         <div className="p-field">
                             <label htmlFor="nombre">Nombre</label>

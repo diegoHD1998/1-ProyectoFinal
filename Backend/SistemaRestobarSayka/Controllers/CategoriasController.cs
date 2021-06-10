@@ -57,6 +57,7 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -96,8 +97,9 @@ namespace SistemaRestobarSayka.Controllers
 
             _context.Categoria.Remove(categoria);
             await _context.SaveChangesAsync();
+            return Ok(id);
 
-            return NoContent();
+            
         }
 
         private bool CategoriaExists(int id)
