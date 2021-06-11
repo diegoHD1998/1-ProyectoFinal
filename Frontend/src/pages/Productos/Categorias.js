@@ -123,7 +123,7 @@ export default function Categorias ()  {
             setCategorias(categorias.filter(val => val.idCategoria !== data))
             setDeleteProductDialog(false);
             setCategoria(emptyProduct);
-            toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Eliminado', life: 3000 });
+            toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Eliminada', life: 3000 });
 
         }).catch(err => {
             console.log(err)

@@ -57,6 +57,7 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+               
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,7 +71,7 @@ namespace SistemaRestobarSayka.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetZona", new { id = zona.IdZona }, zona);
         }
 
         // POST: api/Zonas
@@ -97,7 +98,7 @@ namespace SistemaRestobarSayka.Controllers
             _context.Zonas.Remove(zona);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(id);
         }
 
         private bool ZonaExists(int id)
