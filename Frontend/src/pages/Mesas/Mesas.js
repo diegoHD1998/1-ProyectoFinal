@@ -79,7 +79,7 @@ export default function Mesas ()  {
     const saveProduct = async() => { 
         setSubmitted(true);
 
-        if (mesa.nombre.trim()) {
+        if (mesa.nombre.trim() && mesa.zonaIdZona!= null) {
             let _mesas = [...mesas];
             let _mesa = { ...mesa };
 

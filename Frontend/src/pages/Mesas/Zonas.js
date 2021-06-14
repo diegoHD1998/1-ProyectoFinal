@@ -67,7 +67,7 @@ export default function Zonas ()  {
     const saveProduct = async() => { /* <----------------- */
         setSubmitted(true);
 
-        if (zona.nombre.trim() && zona.estado.trim()) {
+        if (zona.nombre.trim() && zona.estado !== '' && zona.color !== '') {
             let _zonas = [...zonas];
             let _zona = { ...zona };
 
@@ -230,7 +230,7 @@ export default function Zonas ()  {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Zonas"
                         globalFilter={globalFilter} emptyMessage="Zonas No Encontradas." header={header} loading={loading}>
-                        <Column field="idZona" header="Id" sortable ></Column>
+                        
                         <Column field="nombre" header="Nombre" sortable ></Column>
                         <Column field="color" header="Color" body={ColorBodytemplate} sortable ></Column>
                         <Column field="estado" header="Estado" sortable ></Column>
@@ -255,8 +255,8 @@ export default function Zonas ()  {
 
                         <div className="p-field">
                             <h6>Color</h6>
-                            <ColorPicker id="color" style={{width:'30px' }} value={zona.color} onChange={(e) => onInputChange(e, 'color')} className={classNames({ 'p-invalid': submitted && !zona.color })}  ></ColorPicker>
-                            {submitted && !zona.color && <small className="p-invalid">Color Requerido.</small>}
+                            <ColorPicker id="color" style={{width:'30px' }} value={zona.color} defaultColor={`#56EBEE`} onChange={(e) => onInputChange(e, 'color')} className={classNames({ 'p-invalid': submitted && !zona.color })}  ></ColorPicker>
+                            {submitted && !zona.color && <small style={{color:'red'}} className="p-invalid"> Color Requerido.</small>}
                         </div>
                 
                     </Dialog>

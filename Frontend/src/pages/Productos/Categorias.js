@@ -79,7 +79,7 @@ export default function Categorias ()  {
     const saveProduct = async() => { /* <----------------- */
         setSubmitted(true);
 
-        if (categoria.nombre.trim() && categoria.estado.trim() && categoria.tipo.trim()) {
+        if (categoria.nombre.trim() && categoria.estado.trim() && categoria.tipo.trim() && categoria.color !== '') {
             let _categorias = [...categorias];
             let _categoria = { ...categoria };
 
@@ -269,7 +269,7 @@ export default function Categorias ()  {
 
 
                         <div className="p-field">
-                            <label htmlFor="estado">Estato</label>
+                            <label htmlFor="estado">Estado</label>
                             <Dropdown id="estado" value={categoria.estado} options={estadoCategoria} placeholder='Seleccione estado' onChange={(e) => onInputChange(e, 'estado')} required className={classNames({ 'p-invalid': submitted && !categoria.estado })}rows={3} cols={20} />
                             {submitted && !categoria.estado && <small className="p-invalid">Estado Requerido.</small>}
                         </div>
@@ -282,8 +282,8 @@ export default function Categorias ()  {
 
                         <div className="p-field">
                             <h6>Color</h6>
-                            <ColorPicker id="color" style={{width:'30px'}} value={categoria.color} onChange={(e) => onInputChange(e, 'color')} className={classNames({ 'p-invalid': submitted && !categoria.color })} ></ColorPicker>
-                            {submitted && !categoria.color && <small className="p-invalid">Color Requerido.</small>}
+                            <ColorPicker id="color" style={{width:'30px'}} value={categoria.color} defaultColor={`#56EBEE`} onChange={(e) => onInputChange(e, 'color')} className={classNames({ 'p-invalid': submitted && !categoria.color })} ></ColorPicker>
+                            {submitted && !categoria.color && <small className="p-invalid" style={{color:'red'}}>Color Requerido.</small>}
                         </div>
                     </Dialog>
 
