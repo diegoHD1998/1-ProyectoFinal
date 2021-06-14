@@ -5,20 +5,24 @@ const baseUrl = `${process.env.REACT_APP_URL_BASE}/Categorias`
 
 export default class RolService {
 
-    readAll(){
-        return axios.get(baseUrl).then(res => res.data)
+    async readAll(){
+        return await axios.get(baseUrl).then(res)
+        .catch(err => err.response)
     }
 
-    create(categoria){
-        return axios.post(baseUrl,categoria).then(res => res.data)
+    async create(categoria){
+        return await axios.post(baseUrl,categoria).then(res)
+        .catch(err => err.response)
     }
 
-    update(categoria){
-        return axios.put(`${baseUrl}/${categoria.idCategoria}`, categoria).then(res => res.data)
+    async update(categoria){
+        return await axios.put(`${baseUrl}/${categoria.idCategoria}`, categoria).then(res)
+        .catch(err => err.response)
     }
 
-    delete(id){
-        return axios.delete(`${baseUrl}/${id}`).then(res => res.data)
+    async delete(id){
+        return await axios.delete(`${baseUrl}/${id}`).then(res)
+        .catch(err => err.response)
     }
 
 }

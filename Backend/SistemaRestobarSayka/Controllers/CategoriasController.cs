@@ -25,7 +25,8 @@ namespace SistemaRestobarSayka.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
-            return await _context.Categoria.ToListAsync();
+            var categorias = await _context.Categoria.ToListAsync();
+            return Ok(categorias);
         }
 
         // GET: api/Categorias/5
@@ -36,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (categoria == null)
             {
-                return NotFound();
+                return NotFound("Categoria No Encontrada");
             }
 
-            return categoria;
+            return Ok(categoria);
         }
 
         // PUT: api/Categorias/5
@@ -49,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != categoria.IdCategoria)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Categoria No Coinciden");
             }
 
             _context.Entry(categoria).State = EntityState.Modified;
@@ -57,21 +58,20 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
+                
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!CategoriaExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado la Categoria a Modificar");
                 }
                 else
                 {
                     throw;
                 }
             }
-
-            return NoContent();
+            return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
         }
 
         // POST: api/Categorias
@@ -79,9 +79,16 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
-            _context.Categoria.Add(categoria);
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                _context.Categoria.Add(categoria);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                BadRequest("La Categoria No fue Guardada");
+            }
+            
             return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
         }
 
@@ -92,11 +99,19 @@ namespace SistemaRestobarSayka.Controllers
             var categoria = await _context.Categoria.FindAsync(id);
             if (categoria == null)
             {
-                return NotFound();
+                return NotFound("Categoria No Encontrada");
             }
 
-            _context.Categoria.Remove(categoria);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Categoria.Remove(categoria);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Categoria No fue Eliminada");
+            }
+            
             return Ok(id);
 
             

@@ -33,12 +33,19 @@ export default function Zonas ()  {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
-    
+    const [loading, setloading] = useState(true)
     const zonaService = new ZonaService();/* <----------------- */
 
     useEffect(() => {
         const zonaService = new ZonaService();
-        zonaService.readAll().then(data => setZonas(data));/* <----------------- */
+        zonaService.readAll().then(res =>{
+            if(res.status >= 200 && res.status<300){
+                setZonas(res.data)
+                setloading(false)
+            }else{
+                console.log('Error al cargar datos de Zonas')
+            }
+        });
     }, []);
 
 
@@ -66,27 +73,42 @@ export default function Zonas ()  {
 
             if (zona.idZona) {
                 await zonaService.update(zona)
-                .then(data => {
-                    const index = findIndexById(zona.idZona);
-                    _zonas[index] = _zona;
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Actualizada', life: 3000 });
-                    console.log(data)
+                .then(res => {
+                    if(res.status >= 200 && res.status<300){
 
-                }).catch(err =>{
-                    console.log(err)
+                        const index = findIndexById(zona.idZona);
+                        _zonas[index] = _zona;
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Actualizada', life: 3000 });
+                        console.log(res.data);
+
+                    }else if(res.status >= 400 && res.status<500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Zona No Actualizada: ${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Update Zona, Status No controlado`, life: 5000 });
+                    }
+                    
+
                 })
             }
             else {
                 delete _zona.idZona;
                 await zonaService.create(_zona)
-                .then(data => {
-                    _zonas.push(data);
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Creada', life: 3000 });
-                    console.log(data)
-                }).catch(err => {
-                    console.log(err)
-                    toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: 'Zona No Creada', life: 5000 });
-                })
+                .then(res => {
+                    if(res.status >= 200 && res.status<300){
+                        _zonas.push(res.data);
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Creada', life: 3000 });
+                        console.log(res.data)
+                    } else if(res.status >= 400 && res.status<500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Create Zona, Status No controlado`, life: 5000 });
+                    }
+                    
+                });
             }
 
             setZonas(_zonas);
@@ -107,16 +129,23 @@ export default function Zonas ()  {
 
     const deleteProduct = async() => { // <------------------------
         await zonaService.delete(zona.idZona)
-        .then(data => {
-            console.log(data)
-            setZonas(zonas.filter(val => val.idZona !== data))
-            setDeleteProductDialog(false);
-            setZona(emptyProduct);
-            toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Eliminada', life: 3000 });
+        .then(res => {
+            if(res.status >= 200 && res.status<300){
 
-        }).catch(err => {
-            console.log(err)
-        })
+                console.log(res.data)
+                setZonas(zonas.filter(val => val.idZona !== res.data))
+                setDeleteProductDialog(false);
+                setZona(emptyProduct);
+                toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Zona Eliminada', life: 3000 });
+
+            }else if(res.status >= 400 && res.status<500){
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+            }else{
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Delete Zona, Status No controlado`, life: 5000 });
+            }            
+        });
         
     }
 
@@ -200,7 +229,7 @@ export default function Zonas ()  {
                         dataKey="idZona" paginator rows={5} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Zonas"
-                        globalFilter={globalFilter} emptyMessage="Zonas No Encontradas." header={header}>
+                        globalFilter={globalFilter} emptyMessage="Zonas No Encontradas." header={header} loading={loading}>
                         <Column field="idZona" header="Id" sortable ></Column>
                         <Column field="nombre" header="Nombre" sortable ></Column>
                         <Column field="color" header="Color" body={ColorBodytemplate} sortable ></Column>

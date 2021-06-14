@@ -5,20 +5,24 @@ const baseUrl = `${process.env.REACT_APP_URL_BASE}/Roles`
 
 export default class RolService {
 
-    readAll(){
-        return axios.get(baseUrl).then(res => res.data)
+    async readAll(){
+        return await axios.get(baseUrl).then(res)
+        .catch(err => err.response)
     }
 
-    create(rol){
-        return axios.post(baseUrl,rol).then(res => res.data)
+    async create(rol){
+        return await axios.post(baseUrl,rol).then(res)
+        .catch(err => err.response)
     }
 
-    update(rol){
-        return axios.put(`${baseUrl}/${rol.idRol}`, rol).then(res => res.data)
+    async update(rol){
+        return await axios.put(`${baseUrl}/${rol.idRol}`, rol).then(res)
+        .catch(err => err.response)
     }
 
-    delete(id){
-        return axios.delete(`${baseUrl}/${id}`).then(res => res.data)
+    async delete(id){
+        return await axios.delete(`${baseUrl}/${id}`).then(res)
+        .catch(err => err.response)
     }
 
 }

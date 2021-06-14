@@ -23,6 +23,7 @@ export default function Roles ()  {
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [loading, setloading] = useState(true)
     const toast = useRef(null);
     const dt = useRef(null);
 
@@ -30,8 +31,15 @@ export default function Roles ()  {
 
     useEffect(() => {
         const rolService = new RolService();
-        rolService.readAll().then(data => setRoles(data));/* <----------------- */
-    }, []);
+        rolService.readAll().then(res =>{
+            if(res.status >= 200 && res.status <300){
+                setRoles(res.data)
+                setloading(false)
+            }else{
+                console.log('Error al Cargar Datos de Roles')
+            }
+        });
+    },[]);
 
 
     const openNew = () => {
@@ -58,27 +66,39 @@ export default function Roles ()  {
 
             if (rol.idRol) {
                 await rolService.update(rol)
-                .then(data => {
-                    const index = findIndexById(rol.idRol);
-                    _roles[index] = _rol;
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Actualizado', life: 3000 });
-                    console.log(data)
+                .then(res => {
+                    if(res.status >= 200 && res.status <300){
 
-                }).catch(err =>{
-                    console.log(err)
-                })
+                        const index = findIndexById(rol.idRol);
+                        _roles[index] = _rol;
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Actualizado', life: 3000 });
+                        console.log(res)
+
+                    }else if(res.status >= 400 && res.status < 500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Update Rol, Status No Controlado`, life: 5000 });
+                    }
+                });
             }
             else {
                 delete _rol.idRol;
                 await rolService.create(_rol)
-                .then(data => {
-                    _roles.push(data);
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Creado', life: 3000 });
-                    console.log(data)
-                }).catch(err => {
-                    console.log(err)
-                    toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: 'Rol No Creado', life: 5000 });
-                })
+                .then(res => {
+                    if(res.status >= 200 && res.status <300){
+                        _roles.push(res.data);
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Creado', life: 3000 });
+                        console.log(res.data)
+                    }else if(res.status >= 400 && res.status < 500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Create Rol, Status No Controlado`, life: 5000 });
+                    }
+                });
             }
 
             setRoles(_roles);
@@ -99,17 +119,21 @@ export default function Roles ()  {
 
     const deleteProduct = async() => { // <------------------------
         await rolService.delete(rol.idRol)
-        .then(data => {
-            console.log(data)
-            setRoles(roles.filter(val => val.idRol !== data))
-            setDeleteProductDialog(false);
-            setRol(emptyProduct);
-            toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Eliminado', life: 3000 });
-
-        }).catch(err => {
-            console.log(err)
+        .then(res => {
+            if(res.status >= 200 && res.status <300){
+                console.log(res.data)
+                setRoles(roles.filter(val => val.idRol !== res.data))
+                setDeleteProductDialog(false);
+                setRol(emptyProduct);
+                toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Rol Eliminado', life: 3000 });
+            }else if(res.status >= 400 && res.status < 500){
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+            }else{
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Delete Rol, Status No Controlado`, life: 5000 });
+            }
         })
-        
     }
 
     const findIndexById = (idRol) => {/* <----------------- */
@@ -184,8 +208,7 @@ export default function Roles ()  {
                         dataKey="idRol" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Roles"
-                        globalFilter={globalFilter} emptyMessage="Roles No Encontrados." header={header}>
-                        <Column field="idRol" header="Id" sortable ></Column>
+                        globalFilter={globalFilter} emptyMessage="Roles No Encontrados." header={header} loading={loading} >
                         <Column field="nombre" header="Rol" sortable ></Column>
                         <Column body={actionBodyTemplate}></Column>
 

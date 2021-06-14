@@ -25,7 +25,8 @@ namespace SistemaRestobarSayka.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Rol>>> GetRols()
         {
-            return await _context.Rols.ToListAsync();
+            var roles = await _context.Rols.ToListAsync();
+            return Ok(roles);
         }
 
         // GET: api/Rols/5
@@ -36,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (rol == null)
             {
-                return NotFound();
+                return NotFound("Rol No Encontrado");
             }
 
-            return rol;
+            return Ok(rol);
         }
 
         // PUT: api/Rols/5
@@ -49,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != rol.IdRol)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Rol No Coinciden");
             }
 
             _context.Entry(rol).State = EntityState.Modified;
@@ -57,21 +58,21 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
+                
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!RolExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado el Rol a Modificar");
                 }
                 else
                 {
                     throw;
                 }
             }
+            return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
 
-            return NoContent();
         }
 
         // POST: api/Rols
@@ -79,8 +80,16 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Rol>> PostRol(Rol rol)
         {
-            _context.Rols.Add(rol);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Rols.Add(rol);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("El Rol No fue Guardado");
+            }
+            
 
             return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
         }
@@ -92,11 +101,19 @@ namespace SistemaRestobarSayka.Controllers
             var rol = await _context.Rols.FindAsync(id);
             if (rol == null)
             {
-                return NotFound();
+                return NotFound("Rol No Encontrado");
             }
 
-            _context.Rols.Remove(rol);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Rols.Remove(rol);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("El Rol No fue Eliminado");
+            }
+            
 
             return Ok(id);
         }

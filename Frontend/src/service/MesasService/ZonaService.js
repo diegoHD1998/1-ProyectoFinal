@@ -5,20 +5,25 @@ const baseUrl = `${process.env.REACT_APP_URL_BASE}/Zonas`
 
 export default class ZonaService {
 
-    readAll(){
-        return axios.get(baseUrl).then(res => res.data)
+    async readAll(){
+        return await axios.get(baseUrl).then(res)
+        .catch(err => err.response)
+        
     }
 
-    create(zona){
-        return axios.post(baseUrl,zona).then(res => res.data)
+    async create(zona){
+        return await axios.post(baseUrl,zona).then(res)
+        .catch(err => err.response)
     }
 
-    update(zona){
-        return axios.put(`${baseUrl}/${zona.idZona}`, zona).then(res => res.data)
+    async update(zona){
+        return await axios.put(`${baseUrl}/${zona.idZona}`, zona).then(res)
+        .catch(err => err.response)
     }
 
-    delete(id){
-        return axios.delete(`${baseUrl}/${id}`).then(res => res.data)
+    async delete(id){
+        return await axios.delete(`${baseUrl}/${id}`).then(res)
+        .catch(err => err.response)
     }
 
 }

@@ -35,22 +35,30 @@ export default function Categorias ()  {
         'Otro'
     ];
 
-    const [categorias, setCategorias] = useState(null); /* <----------------- */
-    const [categoria, setCategoria] = useState(emptyProduct);/* <----------------- */
+    const [categorias, setCategorias] = useState(null); 
+    const [categoria, setCategoria] = useState(emptyProduct);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
-    /* const [color, setColor] = useState(null); */
+    const [loading, setloading] = useState(true)
     const toast = useRef(null);
     const dt = useRef(null);
     
-    const categoriaService = new CategoriaService();/* <----------------- */
+    const categoriaService = new CategoriaService();
 
     useEffect(() => {
         const categoriaService = new CategoriaService();
-        categoriaService.readAll().then(data => setCategorias(data));/* <----------------- */
-    }, []);
+        categoriaService.readAll().then(res => {
+
+            if(res.status >= 200 && res.status <300){
+                setCategorias(res.data)
+                setloading(false)
+            }else{
+                console.log('Error al Cargar los Datos de Categoria')
+            }
+        });
+    },[]);
 
 
     const openNew = () => {
@@ -77,26 +85,43 @@ export default function Categorias ()  {
 
             if (categoria.idCategoria) {
                 await categoriaService.update(categoria)
-                .then(data => {
-                    const index = findIndexById(categoria.idCategoria);
-                    _categorias[index] = _categoria;
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Actualizada', life: 3000 });
-                    console.log(data)
+                .then(res => {
 
-                }).catch(err =>{
-                    console.log(err)
-                })
+                    if(res.status >= 200 && res.status <300){
+
+                        const index = findIndexById(categoria.idCategoria);
+                        _categorias[index] = _categoria;
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Actualizada', life: 3000 });
+                        console.log(res.data)
+
+                    }else if(res.status >= 400 && res.status < 500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Update Categoria, Status No Controlado`, life: 5000 });
+                    }
+                    
+
+                });
             }
             else {
                 delete _categoria.idCategoria;
                 await categoriaService.create(_categoria)
-                .then(data => {
-                    _categorias.push(data);
-                    toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Creada', life: 3000 });
-                    console.log(data)
-                }).catch(err => {
-                    console.log(err)
-                    toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: 'Categoria No Creada', life: 5000 });
+                .then(res => {
+                    if(res.status >= 200 && res.status <300){
+
+                        _categorias.push(res.data);
+                        toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Creada', life: 3000 });
+                        console.log(res.data)
+
+                    }else if(res.status >= 400 && res.status < 500){
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+                    }else{
+                        console.log(res)
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Create Categoria, Status No Controlado`, life: 5000 });
+                    }
                 })
             }
 
@@ -118,17 +143,23 @@ export default function Categorias ()  {
 
     const deleteProduct = async() => { // <------------------------
         await categoriaService.delete(categoria.idCategoria)
-        .then(data => {
-            console.log(data)
-            setCategorias(categorias.filter(val => val.idCategoria !== data))
-            setDeleteProductDialog(false);
-            setCategoria(emptyProduct);
-            toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Eliminada', life: 3000 });
+        .then(res => {
+            if(res.status >= 200 && res.status <300){
 
-        }).catch(err => {
-            console.log(err)
+                console.log(res.data)
+                setCategorias(categorias.filter(val => val.idCategoria !== res.data))
+                setDeleteProductDialog(false);
+                setCategoria(emptyProduct);
+                toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Categoria Eliminada', life: 3000 });
+            }else if(res.status >= 400 && res.status < 500){
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
+            }else{
+                console.log(res)
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Delete Categoria, Status No Controlado`, life: 5000 });
+            }
+
         })
-        
     }
 
     const findIndexById = (id) => {/* <----------------- */
@@ -211,8 +242,8 @@ export default function Categorias ()  {
                         dataKey="idCategoria" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Categorias"
-                        globalFilter={globalFilter} emptyMessage="Categorias No Encontradas." header={header}>
-                        <Column field="idCategoria" header="Id" sortable ></Column>
+                        globalFilter={globalFilter} emptyMessage="Categorias No Encontradas." header={header} loading={loading}>
+    
                         <Column field="nombre" header="Nombre" sortable ></Column>
                         <Column field="descripcion" header="Descripción" sortable ></Column>
                         <Column field="color" header="Color" body={ColorBodytemplate} sortable ></Column>

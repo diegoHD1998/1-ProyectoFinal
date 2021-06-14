@@ -25,7 +25,8 @@ namespace SistemaRestobarSayka.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mesa>>> GetMesas()
         {
-            return await _context.Mesas.ToListAsync();
+            var mesas = await _context.Mesas.ToListAsync();
+            return Ok(mesas);
         }
 
         // GET: api/Mesas/5
@@ -36,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (mesa == null)
             {
-                return NotFound();
+                return NotFound("Mesa No Encontrada");
             }
 
-            return mesa;
+            return Ok(mesa);
         }
 
         // PUT: api/Mesas/5
@@ -49,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != mesa.IdMesa)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Mesa No Coinciden");
             }
 
             _context.Entry(mesa).State = EntityState.Modified;
@@ -62,7 +63,7 @@ namespace SistemaRestobarSayka.Controllers
             {
                 if (!MesaExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado la Mesa a Modificar");
                 }
                 else
                 {
@@ -70,7 +71,7 @@ namespace SistemaRestobarSayka.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetMesa", new { id = mesa.IdMesa }, mesa);
         }
 
         // POST: api/Mesas
@@ -78,10 +79,17 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Mesa>> PostMesa(Mesa mesa)
         {
-            _context.Mesas.Add(mesa);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Mesas.Add(mesa);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Mesa No fue Guardada");
+            }
 
-            return CreatedAtAction("GetMesa", new { id = mesa.IdMesa }, mesa);
+            return Ok(mesa);
         }
 
         // DELETE: api/Mesas/5
@@ -89,15 +97,22 @@ namespace SistemaRestobarSayka.Controllers
         public async Task<IActionResult> DeleteMesa(int id)
         {
             var mesa = await _context.Mesas.FindAsync(id);
+
             if (mesa == null)
             {
-                return NotFound();
+                return NotFound("Mesa No Encontrada");
             }
 
-            _context.Mesas.Remove(mesa);
-            await _context.SaveChangesAsync();
+            try { 
+                _context.Mesas.Remove(mesa);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Mesa No fue Eliminada");
+            }
 
-            return NoContent();
+            return Ok(id);
         }
 
         private bool MesaExists(int id)

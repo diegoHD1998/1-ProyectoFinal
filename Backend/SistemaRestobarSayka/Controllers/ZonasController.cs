@@ -25,7 +25,8 @@ namespace SistemaRestobarSayka.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Zona>>> GetZonas()
         {
-            return await _context.Zonas.ToListAsync();
+            var zonas = await _context.Zonas.ToListAsync();
+            return Ok(zonas);
         }
 
         // GET: api/Zonas/5
@@ -36,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (zona == null)
             {
-                return NotFound();
+                return NotFound("Zona No Encontrada");
             }
 
-            return zona;
+            return Ok(zona);
         }
 
         // PUT: api/Zonas/5
@@ -49,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != zona.IdZona)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Zona No Coinciden");
             }
 
             _context.Entry(zona).State = EntityState.Modified;
@@ -57,13 +58,12 @@ namespace SistemaRestobarSayka.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-               
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ZonaExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado la Zona a Modificar");
                 }
                 else
                 {
@@ -79,8 +79,16 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Zona>> PostZona(Zona zona)
         {
-            _context.Zonas.Add(zona);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Zonas.Add(zona);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Zona No fue Guardada");
+            }
+            
 
             return CreatedAtAction("GetZona", new { id = zona.IdZona }, zona);
         }
@@ -92,11 +100,19 @@ namespace SistemaRestobarSayka.Controllers
             var zona = await _context.Zonas.FindAsync(id);
             if (zona == null)
             {
-                return NotFound();
+                return NotFound("Zona No Encontrada");
             }
 
-            _context.Zonas.Remove(zona);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Zonas.Remove(zona);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+               return BadRequest("La Zona No fue Eliminada");
+            }
+            
 
             return Ok(id);
         }
