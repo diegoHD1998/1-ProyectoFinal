@@ -95,7 +95,7 @@ export default function Mesas ()  {
 
                     }else if(res.status >= 400 && res.status<500){
                         console.log(res)
-                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Mesa No Actualizada: ${res.data}`, life: 5000 });
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
                     }else{
                         console.log(res)
                         toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Update de Mesa, Status no controlado`, life: 5000 });
@@ -119,7 +119,7 @@ export default function Mesas ()  {
                         toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
                     }else{
                         console.log(res)
-                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Create Zona, Status No controlado`, life: 5000 });
+                        toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Create Mesa, Status No controlado`, life: 5000 });
                     }
                 });
             }
@@ -155,7 +155,7 @@ export default function Mesas ()  {
                 toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `${res.data}`, life: 5000 });
             }else{
                 console.log(res)
-                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Delete Zona, Status No controlado`, life: 5000 });
+                toast.current.show({ severity: 'error', summary: 'Operacion Fallida', detail: `Error en Delete Mesa, Status No controlado`, life: 5000 });
             }
         });
     }

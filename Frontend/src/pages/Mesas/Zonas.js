@@ -43,7 +43,7 @@ export default function Zonas ()  {
                 setZonas(res.data)
                 setloading(false)
             }else{
-                console.log('Error al cargar datos de Zonas')
+                console.log('Error al Cargar Datos de Zonas')
             }
         });
     }, []);
