@@ -7,3 +7,15 @@
     width: 30px;
     
 }
+
+.crud-demo .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.crud-demo .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
