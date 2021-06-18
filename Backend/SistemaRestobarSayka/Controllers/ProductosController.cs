@@ -37,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (producto == null)
             {
-                return NotFound();
+                return NotFound("Producto No Encontrado");
             }
 
-            return producto;
+            return Ok(producto);
         }
 
         // PUT: api/Productoes/5
@@ -50,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != producto.IdProducto)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Producto No Coinciden");
             }
 
             _context.Entry(producto).State = EntityState.Modified;
@@ -63,7 +63,7 @@ namespace SistemaRestobarSayka.Controllers
             {
                 if (!ProductoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado el Producto a Modificar");
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace SistemaRestobarSayka.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetProducto", new { id = producto.IdProducto }, producto);
         }
 
         // POST: api/Productoes
@@ -79,8 +79,17 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Producto>> PostProducto(Producto producto)
         {
-            _context.Productos.Add(producto);
-            await _context.SaveChangesAsync();
+            
+
+            try
+            {
+                _context.Productos.Add(producto);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("El Producto No fue Guardado");
+            }
 
             return CreatedAtAction("GetProducto", new { id = producto.IdProducto }, producto);
         }
@@ -92,13 +101,21 @@ namespace SistemaRestobarSayka.Controllers
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {
-                return NotFound();
+                return NotFound("Producto No Encontrado");
             }
 
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Productos.Remove(producto);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("El Producto No fue Eliminado");
+            }
+            
 
-            return NoContent();
+            return Ok(id);
         }
 
         private bool ProductoExists(int id)

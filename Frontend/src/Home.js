@@ -35,6 +35,7 @@ import Usuarios from './pages/Usuarios/Usuarios';
 import Roles from './pages/Usuarios/Roles';
 import Mesas from './pages/Mesas/Mesas';
 import Zonas from './pages/Mesas/Zonas';
+import FileUploadDemo from './components/subida'
 
 
 
@@ -154,7 +155,7 @@ const Home = () => {
                 
             ]
         },
-        { label: "Ejemplo", icon: "pi pi-fw pi-home", to: "/home/1234" },
+        { label: "Ejemplo", icon: "pi pi-fw pi-home", to: "/home/subida" },
         { label: "Ejemplo2", icon: "pi pi-fw pi-home", to: "/home/123" },
     ];
 
@@ -243,6 +244,11 @@ const Home = () => {
                 {/* Mesas */}
                 <Route path="/home/lista-mesas" component={Mesas} />
                 <Route path="/home/zonas" component={Zonas} />
+
+
+
+                <Route path="/home/subida" component={FileUploadDemo} />
+                
                 
             </div>
 

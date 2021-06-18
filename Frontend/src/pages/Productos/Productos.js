@@ -191,7 +191,7 @@ export default function Productos ()  {
 
         setProducto(_product);
     }
-    /* console.log(zonas) */
+    
     const ColorBodytemplate = (rowData) => {
 
         if(categorias){
@@ -200,12 +200,25 @@ export default function Productos ()  {
 
             return (
                 <>
-                    {`${_categoria?.nombre}`}
-                    <div className={`cuadro`} style={{background:`#${_categoria?.color}`}}></div>
+                    <div className={`cuadro1`} style={{background:`#${_categoria?.color}`}}>
+                    <span className={`texto1`}>{`${_categoria?.nombre}`}</span>
+                    </div>
                 </>
             );
         }
     }
+
+    const MonedaBodyTemplate = (rowData) => {
+
+        return formatCurrency(rowData.precio)
+
+    }
+
+    const formatCurrency = (value) => {
+        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits:0});
+    }
+    
+
 
     const leftToolbarTemplate = () => {
         return (
@@ -263,7 +276,7 @@ export default function Productos ()  {
                         
                         <Column field="nombre" header="Nombre" sortable ></Column>
                         <Column field="descripcion" header="Descripcion" sortable ></Column>
-                        <Column field="precio" header="Precio" sortable ></Column>
+                        <Column field="precio" body={MonedaBodyTemplate} header="Precio" sortable ></Column>
                         <Column field="imagen" header="Imagen" sortable ></Column>
                         <Column field="estado" header="Estado" sortable ></Column>
                         <Column field="categoriaIdCategoria" body={ColorBodytemplate} header="Categoria" sortable ></Column>

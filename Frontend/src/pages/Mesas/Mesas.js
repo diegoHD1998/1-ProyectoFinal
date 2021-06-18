@@ -188,8 +188,10 @@ export default function Mesas ()  {
 
             return (
                 <>
-                    {`${_zona?.nombre}`}
-                    <div className={`cuadro`} style={{background:`#${_zona?.color}`}}></div>
+                    
+                    <div className={`cuadro1`} style={{background:`#${_zona?.color}`}}>
+                        <span className={`texto1`}>{`${_zona?.nombre}`}</span>
+                    </div>
                 </>
             );
         }

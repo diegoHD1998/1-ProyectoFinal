@@ -25,7 +25,8 @@ namespace SistemaRestobarSayka.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Variante>>> GetVariantes()
         {
-            return await _context.Variantes.ToListAsync();
+            var variantes = await _context.Variantes.ToListAsync();
+            return Ok(variantes);
         }
 
         // GET: api/Variantes/5
@@ -36,10 +37,10 @@ namespace SistemaRestobarSayka.Controllers
 
             if (variante == null)
             {
-                return NotFound();
+                return NotFound("Variente No Encontrada");
             }
 
-            return variante;
+            return Ok(variante);
         }
 
         // PUT: api/Variantes/5
@@ -49,7 +50,7 @@ namespace SistemaRestobarSayka.Controllers
         {
             if (id != variante.IdVariante)
             {
-                return BadRequest();
+                return BadRequest("Los Ids de Variante No Coinciden");
             }
 
             _context.Entry(variante).State = EntityState.Modified;
@@ -62,7 +63,7 @@ namespace SistemaRestobarSayka.Controllers
             {
                 if (!VarianteExists(id))
                 {
-                    return NotFound();
+                    return NotFound("No se a Encontrado La variente a Modificar");
                 }
                 else
                 {
@@ -70,7 +71,7 @@ namespace SistemaRestobarSayka.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetVariante", new { id = variante.IdVariante }, variante);
         }
 
         // POST: api/Variantes
@@ -78,8 +79,15 @@ namespace SistemaRestobarSayka.Controllers
         [HttpPost]
         public async Task<ActionResult<Variante>> PostVariante(Variante variante)
         {
-            _context.Variantes.Add(variante);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Variantes.Add(variante);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Variante No fue Guardada");
+            }
 
             return CreatedAtAction("GetVariante", new { id = variante.IdVariante }, variante);
         }
@@ -91,13 +99,22 @@ namespace SistemaRestobarSayka.Controllers
             var variante = await _context.Variantes.FindAsync(id);
             if (variante == null)
             {
-                return NotFound();
+                return NotFound("Variente No Encontrada");
             }
 
-            _context.Variantes.Remove(variante);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Variantes.Remove(variante);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return BadRequest("La Variente No fue Eliminada");
+            }
 
-            return NoContent();
+            
+
+            return Ok(id);
         }
 
         private bool VarianteExists(int id)
